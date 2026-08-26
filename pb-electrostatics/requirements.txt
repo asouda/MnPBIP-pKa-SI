@@ -1,0 +1,5 @@
+apbs-binary
+pymol-open-source
+numpy
+pandas
+ipykernel

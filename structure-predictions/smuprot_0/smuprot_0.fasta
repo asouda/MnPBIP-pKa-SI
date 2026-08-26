@@ -1,0 +1,4 @@
+>protein|name=protein_mn_ligand_protein
+MDELRELLKAEQQAIKIYKEVLKKAKEGDEQELARLIQEIVKAEKQAVKVYKEAAEKARNPEKRQVIDKILEDEEKHIEWLKAASKQGNAEQFASLVQQILQDEQRHVEEIEKKN
+>ligand|name=protein_mn_ligand_ligand
+c1ccc(cc1)c2c3ccc4n3[Mn]56n7c(ccc7c(c8[n+]5c(c4)C=C8)c9ccccc9)cc1[n+]6c2C=C1

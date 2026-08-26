@@ -1,0 +1,21 @@
+[
+  {
+    "name": "protein_mn_ligand",
+    "modelSeeds": [1],
+    "sequences": [
+      {
+        "proteinChain": {
+          "sequence": "MDELRELLKAEQQAIKIYKEVLKKAKEGDEQELARLIQEIVKAEKQAVKVYKEAAEKARNPEKRQVIDKILEDEEKHIEWLKAASKQGNAEQFASLVQQILQDEQRHVEEIEKKN",
+	  "count": 1
+        }
+      },
+
+      {
+        "ligand": {
+          "smiles": "c1ccc(cc1)c2c3ccc4n3[Mn]56n7c(ccc7c(c8[n+]5c(c4)C=C8)c9ccccc9)cc1[n+]6c2C=C1",
+	  "count": 1
+        }
+      }
+    ]
+  }
+]

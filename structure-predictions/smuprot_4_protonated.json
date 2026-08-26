@@ -1,0 +1,21 @@
+[
+  {
+    "name": "protein_mn_ligand_protonated",
+    "modelSeeds": [1],
+    "sequences": [
+      {
+        "proteinChain": {
+          "sequence": "MDELRELLKAEQQAIKIYKEVLKKAKEGDEQELARLIQEIVKAEKQAVKVYKEAAEKARNPEKRQVIDKILEDEEKHIEWLKAASKQGNAEQFASLVQQILQDEQRHVEEIEKKN",
+          "count": 1
+        }
+      },
+
+      {
+        "ligand": {
+          "smiles": "FC(C(F)=C(F)C(F)=C1F)=C1C2=C3[N+]4=C(C=C3)C(C(F)(F)F)=C5C=CC6=[N+]5[Mn-2]74[N+]8=C2C=CC8=C(C(F)(F)F)C(C=C9)=[N+]7C9=C6C%10=CC(C)=C(O)C(C%11=[NH+]C%12=C(C=C(OC)C(OC)=C%12)N%11)=C%10",
+          "count": 1
+        }
+      }
+    ]
+  }
+]

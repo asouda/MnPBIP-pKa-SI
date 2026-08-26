@@ -1,0 +1,6 @@
+chai_lab
+numpy
+biopython
+gemmi
+biotite
+tqdm

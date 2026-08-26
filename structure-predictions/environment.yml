@@ -1,0 +1,14 @@
+name: my_new_env
+channels:
+- conda-forge
+- defaults
+dependencies:
+- python=3.11
+- pip
+- pip:
+  - chai_lab
+  - numpy
+  - biopython
+  - gemmi
+  - biotite
+  - tqdm
