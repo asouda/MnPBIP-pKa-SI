@@ -4,14 +4,27 @@ version = "0.1.0"
 description = "Supplementary materials for MnP-BIP-pKa project"
 readme = "README.md"
 requires-python = ">=3.11"
+
 dependencies = [
-    "apbs-binary>=3.4.1.1",
-    "numpy>=2.4.6",
-    "pandas>=3.0.5",
-    "pymol-open-source",
+    "numpy",
+    "pandas",
+    "tqdm",
 ]
 
 [dependency-groups]
+
+apbs = [
+    "apbs-binary>=3.4.1.1",
+    "pymol-open-source-whl",
+]
+
+chai1 = [
+  "chai_lab",
+  "biopython",
+  "gemmi",
+  "biotite",
+]
+
 dev = [
     "ipykernel>=7.3.0",
 ]
