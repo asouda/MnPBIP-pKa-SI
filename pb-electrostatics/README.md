@@ -18,13 +18,7 @@ to this system.
 | `pka_workflow.ipynb` | Tutorial notebook version, same underlying functions, with markdown narration between steps. Already executed once, so you can read it without rerunning anything. |
 | `requirements.txt` | Python dependencies. |
 
-## Requirements
-
-```bash
-pip install -r requirements.txt
-```
-
-which installs:
+## Package Requirements
 
 - **`apbs-binary`** - a self-contained pip-installable build of APBS
   (Adaptive Poisson-Boltzmann Solver) and its companion command-line
