@@ -54,9 +54,10 @@ import math
 import os
 import re
 import sys
+from contextlib import contextmanager
 from pathlib import Path
 from turtle import title
-from typing import Optional, Sequence
+from typing import Iterator, Optional, Sequence
 
 try:
     import apbs_binary
@@ -370,6 +371,9 @@ PML_TEMPLATE = """\
 bg_color white
 load {structure_pqr}, complex
 
+set surface_quality, 2
+set surface_smooth_edges, on
+
 hide everything
 show surface, complex
 set transparency, 0.15, complex
@@ -424,6 +428,39 @@ def write_pml_script(structure_pqr: Path, diff_dx: Path, out_pml: Path, *,
     return out_pml
 
 
+@contextmanager
+def _silence_stdio() -> Iterator[None]:
+    """Redirect Python and OS-level stdout/stderr to os.devnull.
+
+    PyMOL's ``@file`` include unconditionally ``print``s each command as
+    ``PyMOL>...``, and the C extension writes past ``sys.stdout``, so
+    ``feedback disable`` / ``cmd.do(..., echo=0)`` cannot silence a notebook
+    cell. Dup'ing file descriptors 1 and 2 is what actually works.
+    """
+    sys.stdout.flush()
+    sys.stderr.flush()
+    saved_stdout, saved_stderr = sys.stdout, sys.stderr
+    saved_fd_out = os.dup(1)
+    saved_fd_err = os.dup(2)
+    devnull_fd = os.open(os.devnull, os.O_WRONLY)
+    devnull_file = None
+    try:
+        os.dup2(devnull_fd, 1)
+        os.dup2(devnull_fd, 2)
+        devnull_file = open(os.devnull, "w")
+        sys.stdout = sys.stderr = devnull_file
+        yield
+    finally:
+        sys.stdout, sys.stderr = saved_stdout, saved_stderr
+        if devnull_file is not None:
+            devnull_file.close()
+        os.dup2(saved_fd_out, 1)
+        os.dup2(saved_fd_err, 2)
+        os.close(saved_fd_out)
+        os.close(saved_fd_err)
+        os.close(devnull_fd)
+
+
 def run_pymol_visualization(pml_file: Path, png_out: Optional[Path] = None,
                              width: int = 1200, height: int = 900, dpi: int = 150) -> None:
     """Execute a .pml script headlessly via the pymol2 API and optionally save a PNG."""
@@ -437,15 +474,21 @@ def run_pymol_visualization(pml_file: Path, png_out: Optional[Path] = None,
 
     print("[pymol] launching headless PyMOL session ...")
     session = pymol2.PyMOL()
-    session.start()
-    try:
-        session.cmd.do(f"@{pml_file}")
-        if png_out is not None:
-            session.cmd.ray(width, height)
-            session.cmd.png(str(png_out), dpi=dpi)
-            print(f"[pymol] saved image: {png_out}")
-    finally:
-        session.stop()
+    with _silence_stdio():
+        session.start()
+        try:
+            session.cmd.feedback("disable", "all", "everything")
+            # Drive the parser directly: ``@file`` always echoes ``PyMOL>`` lines.
+            with pml_file.open() as fh:
+                for line in fh:
+                    session.cmd._parser.parse(line, 0)
+            if png_out is not None:
+                session.cmd.ray(width, height)
+                session.cmd.png(str(png_out), dpi=dpi, quiet=1)
+        finally:
+            session.stop()
+    if png_out is not None:
+        print(f"[pymol] saved image: {png_out}")
 
 
 # ----------------------------------------------------------------------
